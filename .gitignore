@@ -1,3 +1,4 @@
 **/Library/
 ubisoft/Assembly-CSharp.csproj
 ubisoft/Assembly-CSharp-Editor.csproj
+*.meta

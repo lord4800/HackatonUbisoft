@@ -132,8 +132,9 @@ public class Robot : MonoBehaviour
     }
     IEnumerator Die()
     {
+        MyAnimator.CrossFade("Death", 0.1f);
         audio.PlayOneShot(deathSound, 1);
-        yield return new WaitForSeconds(2);
+		yield return new WaitForSeconds (2);
         gameObject.SetActive(false);
     }
 }

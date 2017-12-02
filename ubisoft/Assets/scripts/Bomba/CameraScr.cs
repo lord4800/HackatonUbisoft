@@ -120,14 +120,14 @@ public class CameraScr : MonoBehaviour {
 				rot = MainCam.rotation;
 				t = 0;
 				playerState = PlayerState.move;
-			}else if (moveStyle == CamMoveStyle.First)
+			}else if (moveStyle == CamMoveStyle.Second)
 			{
 				NextCamPos = NextCamPos.NextPos;
 				pos = MainCam.position;
 				rot = MainCam.rotation;
 				t= 0;
 				playerState = PlayerState.move;
-			}else if (moveStyle == CamMoveStyle.First)
+			}else if (moveStyle == CamMoveStyle.Third)
 			{
 				Tangent2 = NextCamPos.Tangent2.position;
 				NextCamPos = NextCamPos.NextPos;

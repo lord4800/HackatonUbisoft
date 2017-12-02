@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
     Robot MyRobot;
-    int type;
+    public int type;
 
 	void Start () {
         MyRobot = GetComponent<Robot>();

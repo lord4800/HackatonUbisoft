@@ -1484,9 +1484,12 @@ MonoBehaviour:
   MyArmor: {fileID: 550819740}
   MyWeapon: {fileID: 550819741}
   Opponent: {fileID: 1795152378}
-  deathSound: {fileID: 8300000, guid: 6e49c6198834e454e8748b0e8ed88487, type: 3}
+  attack: 0
+  block: 0
+  deathSound: {fileID: 8300000, guid: b4b0924d80e02cb458fa6af272902ce0, type: 3}
   hitSound: {fileID: 8300000, guid: 6e49c6198834e454e8748b0e8ed88487, type: 3}
   blockSound: {fileID: 8300000, guid: 32e53a51f66254b489fad46421517c63, type: 3}
+  currentState: 0
 --- !u!114 &550819740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1510,7 +1513,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2714c7972f4d83b4d917f8dd4ac5dda1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: 0a0000000a0000000a000000
+  stats: 010000000100000001000000
 --- !u!95 &550819742
 Animator:
   serializedVersion: 3
@@ -4412,7 +4415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2714c7972f4d83b4d917f8dd4ac5dda1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: 0a0000000a0000000a000000
+  stats: 010000000100000001000000
 --- !u!114 &1795152377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4439,9 +4442,12 @@ MonoBehaviour:
   MyArmor: {fileID: 1795152377}
   MyWeapon: {fileID: 1795152376}
   Opponent: {fileID: 550819739}
-  deathSound: {fileID: 8300000, guid: 6e49c6198834e454e8748b0e8ed88487, type: 3}
+  attack: 0
+  block: 0
+  deathSound: {fileID: 8300000, guid: b4b0924d80e02cb458fa6af272902ce0, type: 3}
   hitSound: {fileID: 8300000, guid: 6e49c6198834e454e8748b0e8ed88487, type: 3}
   blockSound: {fileID: 8300000, guid: 32e53a51f66254b489fad46421517c63, type: 3}
+  currentState: 0
 --- !u!114 &1795152379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4453,6 +4459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36b3092bbbc9a4d4d89d913a10bf9533, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
 --- !u!82 &1795152380
 AudioSource:
   m_ObjectHideFlags: 0

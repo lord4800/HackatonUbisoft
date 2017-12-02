@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Robot : MonoBehaviour
 {
-    int HP = 10;
+    public int HP = 25;
     AudioSource audio;
     [SerializeField] Armor MyArmor;
     [SerializeField] Weapon MyWeapon;

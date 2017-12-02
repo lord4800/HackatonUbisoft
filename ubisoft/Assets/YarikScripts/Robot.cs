@@ -10,44 +10,25 @@ public class Robot : MonoBehaviour
     [SerializeField] Weapon MyWeapon;
     Animator MyAnimator;
     [SerializeField] Robot Opponent;
-    [SerializeField] bool attack;
-    [SerializeField] bool block;
     int attackType;
     int defendType;
     [SerializeField] AudioClip deathSound;
     [SerializeField] AudioClip hitSound;
     [SerializeField] AudioClip blockSound;
 
-    enum State { Idle, Attack, Block, BlockReaction, TakeHit };
-    [SerializeField] State currentState;
+    public enum State { Idle, Attack, Block, BlockReaction, TakeHit };
+    public State currentState;
 
     void Start()
     {
         MyAnimator = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
     }
-    void Update()
-    {
-    }
 
 
     public void SetNewOpponent(Robot NewOpponent)
     {
         Opponent = NewOpponent;
-    }
-
-    public void StartAttack(int attackType)
-    {
-        StartCoroutine(Atack(attackType));
-    }
-    public void StartDefend(int defendType)
-    {
-        StartCoroutine(Defend(defendType));
-    }
-
-    public void TakeHit(int type, int value)
-    {
-        StartCoroutine(ITakeHit(type, value));
     }
     public void TakeStun()
     {
@@ -63,10 +44,10 @@ public class Robot : MonoBehaviour
         MyWeapon = NewWeapon;
     }
 
-    IEnumerator ITakeHit(int type, int value)
+    
+    public IEnumerator TakeHit(int type, int value)
     {
-        attack = false;
-        if (block)
+        if (currentState == State.Block)
         {
             int damage = value - MyArmor.stats[type];
             audio.PlayOneShot(blockSound, 1);
@@ -78,6 +59,7 @@ public class Robot : MonoBehaviour
                 if (HP <= 0) StartCoroutine(Die());
                 else yield return new WaitForSeconds(2);
                 currentState = State.Idle;
+                MyAnimator.CrossFade("Idle", 0.1f);
             }
             if (defendType == type)
                 Opponent.TakeStun();
@@ -86,51 +68,48 @@ public class Robot : MonoBehaviour
         else
         {
             audio.PlayOneShot(hitSound, 1);
+            currentState = State.TakeHit;
             MyAnimator.CrossFade("TakeHit" + type.ToString(), 0.1f);
             HP -= value;
-            currentState = State.TakeHit;
             if (HP <= 0) StartCoroutine(Die());
             else
             {
                 yield return new WaitForSeconds(2);
                 currentState = State.Idle;
+                MyAnimator.CrossFade("Idle", 0.1f);
             }
 
         }
     }
-    IEnumerator Atack(int attackType)
+    public IEnumerator Attack(int attackType)
     {
+
         if (currentState == State.Idle || currentState == State.Block)
         {
             currentState = State.Attack;
-            block = false;
-            attack = true;
             MyAnimator.CrossFade("Attack" + attackType.ToString(), 0.1f);
             yield return new WaitForSeconds(1f);
-            if (attack)
+            if (currentState == State.Attack)
             {
-                Opponent.TakeHit(attackType, MyWeapon.stats[attackType]);
+                StartCoroutine(Opponent.TakeHit(attackType, MyWeapon.stats[attackType]));
                 yield return new WaitForSeconds(1f);
                 currentState = State.Idle;
+                MyAnimator.CrossFade("Idle", 0.1f);
             }
-            yield return new WaitForSeconds(1f);
-            attack = false;
         }
     }
-    IEnumerator Defend(int defendType)
+    public IEnumerator Defend(int defendType)
     {
-        if (currentState == State.Idle || currentState == State.Block)
+        if (currentState == State.Idle)
         {
-            attack = false;
-            block = true;
             currentState = State.Block;
             MyAnimator.CrossFade("BlockIdle", 0.1f);
             yield return new WaitForSeconds(2);
-            block = false;
             currentState = State.Idle;
+            MyAnimator.CrossFade("Idle", 0.1f);
         }
     }
-    IEnumerator Die()
+    public IEnumerator Die()
     {
         MyAnimator.CrossFade("Death", 0.1f);
         audio.PlayOneShot(deathSound, 1);

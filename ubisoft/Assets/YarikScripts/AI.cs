@@ -23,9 +23,9 @@ public class AI : MonoBehaviour{
             else whatToDo = 1;
             type = Random.Range(0, 3);
             if (whatToDo == 0)
-                MyRobot.StartAttack(type);
+                StartCoroutine(MyRobot.Attack(type));
             else
-                MyRobot.StartDefend(type);
+                StartCoroutine(MyRobot.Defend(type));
         }
     }
 }

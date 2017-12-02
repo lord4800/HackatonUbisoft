@@ -16,6 +16,7 @@ public class Robot : MonoBehaviour
     [SerializeField] AudioClip hitSound;
     [SerializeField] AudioClip blockSound;
 
+	public RobotManagerScr RMS;
     public enum State { Idle, Attack, Block, BlockReaction, TakeHit };
     public State currentState;
 
@@ -114,6 +115,8 @@ public class Robot : MonoBehaviour
         MyAnimator.CrossFade("Death", 0.1f);
         audio.PlayOneShot(deathSound, 1);
 		yield return new WaitForSeconds (2);
+		if (RMS!= null)
+		RMS.StopFight();
         gameObject.SetActive(false);
     }
 }

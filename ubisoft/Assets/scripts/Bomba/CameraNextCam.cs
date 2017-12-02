@@ -9,10 +9,12 @@ namespace BombaScr{
 		public Transform Tangent2;
 
 		public Transform Robot;
+		public RobotManagerScr RMS;
+
 		public bool IsRobot;
 		// Use this for initialization
 		void Start () {
-			
+			//RMS = Robot.GetComponent<RobotManagerScr>();
 		}
 	
 		// Update is called once per frame

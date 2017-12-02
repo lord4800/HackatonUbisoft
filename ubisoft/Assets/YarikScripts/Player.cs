@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
     Robot MyRobot;
-    int type;
+    public int type;
 
 	void Start () {
         MyRobot = GetComponent<Robot>();
@@ -13,13 +13,13 @@ public class Player : MonoBehaviour {
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow) && MyRobot.currentState == Robot.State.Idle)
         {
-            MyRobot.StartAttack(type);
+            StartCoroutine(MyRobot.Attack(type));
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            MyRobot.StartDefend(type);
+            StartCoroutine(MyRobot.Defend(type));
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow) && type > 0)
         {

@@ -7,6 +7,7 @@ public class CameraScr : MonoBehaviour {
 		public CameraNextCam NextCamPos;
 		[Range(0,2)]
 		public float Speed;
+
 		public enum PlayerState
 		{
 			move,
@@ -19,6 +20,7 @@ public class CameraScr : MonoBehaviour {
 			Second,
 			Third
 		}
+		public Robot Hero;
 		public CamMoveStyle moveStyle;
 		public PlayerState playerState;
 		Vector3 pos;
@@ -64,10 +66,7 @@ public class CameraScr : MonoBehaviour {
 					if (curDist<0.001f)
 					{
 						playerState = PlayerState.fight;
-						NextCamPos = NextCamPos.NextPos;
-						pos = MainCam.position;
-						rot = MainCam.rotation;
-						t = 0;
+						NextCamPos.RMS.StartFight();
 						//SomeStuff for next link;
 					}
 				}else if (moveStyle == CamMoveStyle.Second)
@@ -79,10 +78,7 @@ public class CameraScr : MonoBehaviour {
 					if (curDist<0.1f)
 					{
 						playerState = PlayerState.fight;
-						NextCamPos = NextCamPos.NextPos;
-						pos = MainCam.position;
-						rot = MainCam.rotation;
-						t= 0;
+						NextCamPos.RMS.StartFight();
 						//SomeStuff for next link;
 					}
 				}else if (moveStyle == CamMoveStyle.Third)
@@ -94,16 +90,17 @@ public class CameraScr : MonoBehaviour {
 					MainCam.position = Vector3.Lerp(MainCam.position, GetPoint(pos,Tangent2,NextCamPos.Tangent1.position,NextCamPos.transform.position,t),x);
 					//MainCam.position = Vector3.Lerp(MainCam.position,NextCamPos.transform.position,t);
 					//MainCam.rotation = Quaternion.Lerp(MainCam.rotation,NextCamPos.transform.rotation,x);
-					MainCam.rotation = Quaternion.Lerp(MainCam.rotation,Quaternion.LookRotation(NextCamPos.Robot.position-MainCam.position+Vector3.up*1.5f),x);
+					MainCam.rotation = Quaternion.Lerp(MainCam.rotation,Quaternion.LookRotation(NextCamPos.Robot.position-MainCam.position+Vector3.up*0.2f),x);
 					if (curDist<0.1f)
 					{
 						playerState = PlayerState.fight;
-						Tangent2 = NextCamPos.Tangent2.position;
-						NextCamPos = NextCamPos.NextPos;
-						pos = MainCam.position;
-						rot = MainCam.rotation;
-						t = 0;
-						x = 0;
+						if (NextCamPos.RMS != null){
+							NextCamPos.RMS.StartFight();
+						}else 
+						{
+							NextCamPos.RMS = NextCamPos	.GetComponent<RobotManagerScr>();
+							NextCamPos.RMS.StartFight();
+						}
 
 						//SomeStuff for next link;
 					}
@@ -112,6 +109,33 @@ public class CameraScr : MonoBehaviour {
 			}else if (playerState == PlayerState.fight)
 			{
 				
+			}
+		}
+		public void MoveNext() 
+		{
+			if (moveStyle == CamMoveStyle.First)
+			{
+				NextCamPos = NextCamPos.NextPos;
+				pos = MainCam.position;
+				rot = MainCam.rotation;
+				t = 0;
+				playerState = PlayerState.move;
+			}else if (moveStyle == CamMoveStyle.Second)
+			{
+				NextCamPos = NextCamPos.NextPos;
+				pos = MainCam.position;
+				rot = MainCam.rotation;
+				t= 0;
+				playerState = PlayerState.move;
+			}else if (moveStyle == CamMoveStyle.Third)
+			{
+				Tangent2 = NextCamPos.Tangent2.position;
+				NextCamPos = NextCamPos.NextPos;
+				pos = MainCam.position;
+				rot = MainCam.rotation;
+				t = 0;
+				x = 0;
+				playerState = PlayerState.move;
 			}
 		}
 	}

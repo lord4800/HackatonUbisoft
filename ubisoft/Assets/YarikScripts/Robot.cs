@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Robot : MonoBehaviour {
-    int HP;
+    int HP = 1000;
     [SerializeField] Armor MyArmor;
     [SerializeField] Weapon MyWeapon;
-    Robot Opponent;
-    bool doAttack;
-    bool doDefend;
+    Animator MyAnimator;
+    [SerializeField] Robot Opponent;
+    bool attack;
+    bool block;
     int attackType;
     int defendType;
 
-    void Start () {		
+    enum State {Idle, Attack, Block, BlockReaction, TakeHit };
+    State currentState;
+
+    void Start() {
+        MyAnimator = GetComponent<Animator>();
 	}
 	void Update () {		
 	}
@@ -25,27 +30,31 @@ public class Robot : MonoBehaviour {
     
     public void StartAttack(int attackType)
     {
-        doDefend = false;
-        doAttack = true;
+        currentState = State.Attack;
+        block = false;
+        attack = true;
+        MyAnimator.CrossFade("Attack" + attackType.ToString(), 0.1f);
+
+        StartCoroutine(WaitAndHit());
+
     }
     public void StartDefend(int defendType)
     {
-        doAttack = false;
-        doDefend = true;
+        attack = false;
+        block = true;
+        MyAnimator.CrossFade("BlockIdle", 0.1f);
     }
-    void MakeHit()
-    {
-        //
-        Opponent.TakeHit(attackType, MyWeapon.stats[attackType]);
-    }
+    
     public void TakeHit(int type, int value)
     {
         //
-        if (doDefend)
+        attack = false;
+        if (block)
         {
             int damage = value - MyArmor.stats[type];
             if (damage > 0)
             {
+                MyAnimator.CrossFade("BlockReact", 0.1f);
                 HP -= damage;
                 if (HP <= 0) Die();
             }
@@ -54,6 +63,7 @@ public class Robot : MonoBehaviour {
         }
         else
         {
+            MyAnimator.CrossFade("TakeHit" + type.ToString(), 0.1f);
             HP -= value;
             if (HP <= 0) Die();
         }
@@ -77,4 +87,11 @@ public class Robot : MonoBehaviour {
         //
     }
 
+
+    IEnumerator WaitAndHit()
+    {
+        yield return new WaitForSeconds(0.8f);
+        if (attack)
+            Opponent.TakeHit(attackType, MyWeapon.stats[attackType]);
+    }
 }

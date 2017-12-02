@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Robot : MonoBehaviour {
-    int HP = 1000;
+public class Robot : MonoBehaviour
+{
+    int HP = 10;
+    AudioSource audio;
     [SerializeField] Armor MyArmor;
     [SerializeField] Weapon MyWeapon;
     Animator MyAnimator;
@@ -12,31 +14,39 @@ public class Robot : MonoBehaviour {
     bool block;
     int attackType;
     int defendType;
+    [SerializeField] AudioClip deathSound;
+    [SerializeField] AudioClip hitSound;
+    [SerializeField] AudioClip blockSound;
 
-    enum State {Idle, Attack, Block, BlockReaction, TakeHit };
+    enum State { Idle, Attack, Block, BlockReaction, TakeHit };
     State currentState;
 
-    void Start() {
+    void Start()
+    {
         MyAnimator = GetComponent<Animator>();
-	}
-	void Update () {		
-	}
-    
+        audio = GetComponent<AudioSource>();
+    }
+    void Update()
+    {
+    }
+
 
     public void SetNewOpponent(Robot NewOpponent)
     {
         Opponent = NewOpponent;
     }
-    
+
     public void StartAttack(int attackType)
     {
-        currentState = State.Attack;
-        block = false;
-        attack = true;
-        MyAnimator.CrossFade("Attack" + attackType.ToString(), 0.1f);
+        if (currentState == State.Idle || currentState == State.Block)
+        {
+            currentState = State.Attack;
+            block = false;
+            attack = true;
+            MyAnimator.CrossFade("Attack" + attackType.ToString(), 0.1f);
 
-        StartCoroutine(WaitAndHit());
-
+            StartCoroutine(WaitAndHit());
+        }
     }
     public void StartDefend(int defendType)
     {
@@ -44,7 +54,7 @@ public class Robot : MonoBehaviour {
         block = true;
         MyAnimator.CrossFade("BlockIdle", 0.1f);
     }
-    
+
     public void TakeHit(int type, int value)
     {
         //
@@ -54,18 +64,20 @@ public class Robot : MonoBehaviour {
             int damage = value - MyArmor.stats[type];
             if (damage > 0)
             {
+                audio.PlayOneShot(blockSound,1);
                 MyAnimator.CrossFade("BlockReact", 0.1f);
                 HP -= damage;
-                if (HP <= 0) Die();
+                if (HP <= 0) StartCoroutine(Die());
             }
             if (defendType == type)
                 Opponent.TakeStun();
         }
         else
         {
+            audio.PlayOneShot(hitSound, 1);
             MyAnimator.CrossFade("TakeHit" + type.ToString(), 0.1f);
             HP -= value;
-            if (HP <= 0) Die();
+            if (HP <= 0) StartCoroutine(Die());
         }
     }
     public void TakeStun()
@@ -82,16 +94,20 @@ public class Robot : MonoBehaviour {
         MyWeapon = NewWeapon;
     }
 
-    public void Die()
-    {
-        //
-    }
-
-
     IEnumerator WaitAndHit()
     {
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(1f);
         if (attack)
+        {
             Opponent.TakeHit(attackType, MyWeapon.stats[attackType]);
+            currentState = State.Idle;
+        }
+    }
+    IEnumerator Die()
+    {
+        audio.clip = deathSound;
+        audio.Play();
+        yield return new WaitForSeconds(audio.clip.length);
+        gameObject.SetActive(false);
     }
 }

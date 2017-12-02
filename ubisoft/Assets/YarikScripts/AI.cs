@@ -19,7 +19,7 @@ public class AI : MonoBehaviour{
     {
         while (true)
         {
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(2.5f);
             whatToDo = Random.Range(0, 2);
             type = Random.Range(0, 3);
             if (whatToDo == 0)

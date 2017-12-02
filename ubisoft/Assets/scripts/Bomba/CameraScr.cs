@@ -94,7 +94,7 @@ public class CameraScr : MonoBehaviour {
 					MainCam.position = Vector3.Lerp(MainCam.position, GetPoint(pos,Tangent2,NextCamPos.Tangent1.position,NextCamPos.transform.position,t),x);
 					//MainCam.position = Vector3.Lerp(MainCam.position,NextCamPos.transform.position,t);
 					//MainCam.rotation = Quaternion.Lerp(MainCam.rotation,NextCamPos.transform.rotation,x);
-					MainCam.rotation = Quaternion.Lerp(MainCam.rotation,Quaternion.LookRotation(NextCamPos.Robot.position-MainCam.position+Vector3.up*1.5f),x);
+					MainCam.rotation = Quaternion.Lerp(MainCam.rotation,Quaternion.LookRotation(NextCamPos.Robot.position-MainCam.position+Vector3.up*0.2f),x);
 					if (curDist<0.1f)
 					{
 						playerState = PlayerState.fight;

@@ -22,17 +22,17 @@ public class Robot : MonoBehaviour {
     {
         Opponent = NewOpponent;
     }
-
-
-    public void Attack(int attackType)
+    
+    public void StartAttack(int attackType)
     {
-        //
+        doDefend = false;
+        doAttack = true;
     }
-    public void Defend(int defendType)
+    public void StartDefend(int defendType)
     {
-        //
+        doAttack = false;
+        doDefend = true;
     }
-
     void MakeHit()
     {
         //

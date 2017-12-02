@@ -5,16 +5,16 @@ using UnityEngine;
 public class Player : MonoBehaviour {
     Robot MyRobot;
 
+
 	void Start () {
         MyRobot = GetComponent<Robot>();
 	}
 
-    public void Fight()
+    void Update()
     {
-
-    }
-    public void Move()
-    {
-
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            //MyRobot.StartAttack();
+        }
     }
 }

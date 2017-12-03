@@ -1,0 +1,24 @@
+<sbspresets formatversion="1.0" count="1">
+ <sbspreset pkgurl="pkg://crate/crate" description="Exported from Unity" label="unity">
+ <presetinput identifier="$outputsize" uid="1162810799" type="8" value="11,11"/>
+ <presetinput identifier="$randomseed" uid="305988605" type="4" value="0"/>
+ <presetinput identifier="emiss" uid="920656067" type="4" value="1"/>
+ <presetinput identifier="emissColor" uid="920871507" type="2" value="0.746975,0.776471,0.176608"/>
+ <presetinput identifier="color1" uid="921025441" type="2" value="0.608957,0.664820,0.788235"/>
+ <presetinput identifier="color2" uid="921023642" type="2" value="0.117647,0.243137,0.529412"/>
+ <presetinput identifier="color3" uid="921013260" type="2" value="0.183824,0.183824,0.183824"/>
+ <presetinput identifier="color4" uid="921013479" type="2" value="0.260945,0.402319,0.658824"/>
+ <presetinput identifier="decWear" uid="921015277" type="0" value="0.000000"/>
+ <presetinput identifier="decal_rough" uid="907909904" type="0" value="0.143000"/>
+ <presetinput identifier="left_decal_col" uid="907030377" type="3" value="0.244107,0.444365,0.772059,1.000000"/>
+ <presetinput identifier="right_decal_col" uid="907028829" type="3" value="0.102076,0.391292,0.867647,1.000000"/>
+ <presetinput identifier="metal_wear_level" uid="907837943" type="0" value="0.000000"/>
+ <presetinput identifier="metal_grunge_amount" uid="907837917" type="0" value="0.400000"/>
+ <presetinput identifier="dirt_color" uid="907867284" type="2" value="0.329412,0.244160,0.045212"/>
+ <presetinput identifier="dirt_height" uid="907030552" type="0" value="0.420000"/>
+ <presetinput identifier="dirt_level" uid="907843282" type="0" value="0.000000"/>
+ <presetinput identifier="dirt_grunge_amount" uid="907842323" type="0" value="0.510000"/>
+ <presetinput identifier="left_decal" uid="907856203" type="5" value=""/>
+ <presetinput identifier="right_decal" uid="907856698" type="5" value=""/>
+ </sbspreset>
+</sbspresets>

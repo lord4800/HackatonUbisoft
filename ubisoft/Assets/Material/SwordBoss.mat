@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Sword
+  m_Name: SwordBoss
   m_Shader: {fileID: 4800000, guid: 33916321d2bc4b947b0a3046f6baab7d, type: 3}
   m_ShaderKeywords: _EMISSION _METALLICGLOSSMAP _NORMALMAP _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
   m_LightmapFlags: 1
@@ -81,4 +81,4 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0.06997965, g: 1, b: 0.03676468, a: 0.019607844}
-    - _Emissioncolor: {r: 0, g: 0, b: 0.55820304, a: 1}
+    - _Emissioncolor: {r: 0.8835842, g: 0, b: 0, a: 1}

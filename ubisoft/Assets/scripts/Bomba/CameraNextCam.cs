@@ -7,11 +7,19 @@ namespace BombaScr{
 		public CameraNextCam NextPos;
 		public Transform Tangent1;
 		public Transform Tangent2;
+		public bool RotateRobotLeft;
+		public bool RotateRobotRight;
+		public int NextLevel;
 
 		public Transform Robot;
 		public RobotManagerScr RMS;
 
+		public CameraNextCam Left;
+		public CameraNextCam Right;
+		public bool Work;
 		public bool IsRobot;
+		public bool isFinal;
+		public CameraScr CS;
 		// Use this for initialization
 		void Start () {
 			//RMS = Robot.GetComponent<RobotManagerScr>();
@@ -19,7 +27,26 @@ namespace BombaScr{
 	
 		// Update is called once per frame
 		void Update () {
-			
+			if (Work)
+			{
+				if (Input.GetKeyDown(KeyCode.LeftArrow))
+				{
+					//left
+					NextPos = Left;
+					PlayerPrefs.SetInt("Level",NextLevel);
+					Debug.Log ("Left");
+					CS.MoveNext();
+				}
+
+				if (Input.GetKeyDown(KeyCode.RightArrow))
+				{
+					//right
+					NextPos = Right;
+					PlayerPrefs.SetInt("Level",NextLevel);
+					Debug.Log ("Right");
+					CS.MoveNext();
+				}
+			}
 		}
 		void OnDrawGizmos() {
 			Gizmos.color = Color.yellow;

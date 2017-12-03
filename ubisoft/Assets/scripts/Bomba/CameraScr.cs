@@ -1,13 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace BombaScr{
 public class CameraScr : MonoBehaviour {
+		public int CurrentLevelCountEquip;
+		public int CurrentLevel;
 		public Transform MainCam;
 		public CameraNextCam NextCamPos;
 		[Range(0,2)]
 		public float Speed;
 
+		public CameraMovementScr CMS;
 		public enum PlayerState
 		{
 			move,
@@ -23,12 +27,16 @@ public class CameraScr : MonoBehaviour {
 		public Robot Hero;
 		public CamMoveStyle moveStyle;
 		public PlayerState playerState;
+		public string[] Scenes;
 		Vector3 pos;
 		Quaternion rot;
 		Vector3 Tangent2;
+		Fade fade;
 		float Distance;
 		// Use this for initialization
 		void Start () {
+			fade = GetComponent<Fade>();
+			CurrentLevel = PlayerPrefs.GetInt("Level");
 			playerState = PlayerState.move;
 			if (NextCamPos == null)
 			{
@@ -36,6 +44,7 @@ public class CameraScr : MonoBehaviour {
 			}else 
 			{
 				Distance = Vector3.Distance(MainCam.position,NextCamPos.transform.position);
+				CMS.lookAt = NextCamPos.Robot;
 				pos = MainCam.position;
 				rot = MainCam.rotation;
 				Tangent2 = MainCam.position;
@@ -65,8 +74,12 @@ public class CameraScr : MonoBehaviour {
 					MainCam.rotation = Quaternion.Lerp(rot,NextCamPos.transform.rotation,t);
 					if (curDist<0.001f)
 					{
+						if (NextCamPos.IsRobot){
 						playerState = PlayerState.fight;
+							if (NextCamPos.RotateRobotLeft )
+							{NextCamPos.RMS.TurnLeft();}else if (NextCamPos.RotateRobotLeft){NextCamPos.RMS.TurnRight();}
 						NextCamPos.RMS.StartFight();
+						}
 						//SomeStuff for next link;
 					}
 				}else if (moveStyle == CamMoveStyle.Second)
@@ -77,8 +90,15 @@ public class CameraScr : MonoBehaviour {
 					MainCam.rotation = Quaternion.Lerp(MainCam.rotation,NextCamPos.transform.rotation,t);
 					if (curDist<0.1f)
 					{
+						if (NextCamPos.RotateRobotLeft )
+						{Debug.Log ("Stuff");NextCamPos.RMS.TurnLeft();}else if (NextCamPos.RotateRobotRight){NextCamPos.RMS.TurnRight();}
+						if (NextCamPos.IsRobot){
 						playerState = PlayerState.fight;
 						NextCamPos.RMS.StartFight();
+						}else if (!NextCamPos.isFinal)
+						{
+							
+						}
 						//SomeStuff for next link;
 					}
 				}else if (moveStyle == CamMoveStyle.Third)
@@ -93,6 +113,9 @@ public class CameraScr : MonoBehaviour {
 					MainCam.rotation = Quaternion.Lerp(MainCam.rotation,Quaternion.LookRotation(NextCamPos.Robot.position-MainCam.position+Vector3.up*0.2f),x);
 					if (curDist<0.1f)
 					{
+						if (NextCamPos.RotateRobotLeft )
+						{NextCamPos.RMS.TurnLeft();}else if (NextCamPos.RotateRobotLeft){NextCamPos.RMS.TurnRight();}
+						if (NextCamPos.IsRobot){
 						playerState = PlayerState.fight;
 						if (NextCamPos.RMS != null){
 							NextCamPos.RMS.StartFight();
@@ -101,7 +124,15 @@ public class CameraScr : MonoBehaviour {
 							NextCamPos.RMS = NextCamPos	.GetComponent<RobotManagerScr>();
 							NextCamPos.RMS.StartFight();
 						}
+						}else if (NextCamPos.isFinal) 
+						{
+							//Fade
+							fade.FadeNow();
 
+						}else
+						{
+							NextCamPos.Work = true;
+						}
 						//SomeStuff for next link;
 					}
 				}
@@ -116,6 +147,7 @@ public class CameraScr : MonoBehaviour {
 			if (moveStyle == CamMoveStyle.First)
 			{
 				NextCamPos = NextCamPos.NextPos;
+				CMS.lookAt = NextCamPos.Robot;
 				pos = MainCam.position;
 				rot = MainCam.rotation;
 				t = 0;
@@ -123,6 +155,7 @@ public class CameraScr : MonoBehaviour {
 			}else if (moveStyle == CamMoveStyle.Second)
 			{
 				NextCamPos = NextCamPos.NextPos;
+				CMS.lookAt = NextCamPos.Robot;
 				pos = MainCam.position;
 				rot = MainCam.rotation;
 				t= 0;
@@ -131,6 +164,7 @@ public class CameraScr : MonoBehaviour {
 			{
 				Tangent2 = NextCamPos.Tangent2.position;
 				NextCamPos = NextCamPos.NextPos;
+				CMS.lookAt = NextCamPos.Robot;
 				pos = MainCam.position;
 				rot = MainCam.rotation;
 				t = 0;

@@ -19,9 +19,14 @@ public class Robot : MonoBehaviour
 	public RobotManagerScr RMS;
     public enum State { Idle, Attack, Block, BlockReaction, TakeHit };
     public State currentState;
-
+	bool DrawHit;
+	public HitFadeScr HFS;
     void Start()
     {
+		if (HFS != null)
+		{
+			DrawHit = true;
+		}
         MyAnimator = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
     }
@@ -56,6 +61,10 @@ public class Robot : MonoBehaviour
             currentState = State.BlockReaction;
             if (damage > 0)
             {
+				if (DrawHit)
+				{
+					HFS.hit();
+				}
                 HP -= damage;
                 if (HP <= 0) StartCoroutine(Die());
                 else yield return new WaitForSeconds(2);
@@ -68,6 +77,10 @@ public class Robot : MonoBehaviour
         }
         else
         {
+			if (DrawHit)
+			{
+				HFS.hit();
+			}
             audio.PlayOneShot(hitSound, 1);
             currentState = State.TakeHit;
             MyAnimator.CrossFade("TakeHit" + type.ToString(), 0.1f);
@@ -90,7 +103,7 @@ public class Robot : MonoBehaviour
             currentState = State.Attack;
             MyAnimator.CrossFade("Attack" + attackType.ToString(), 0.1f);
             yield return new WaitForSeconds(1f);
-            if (currentState == State.Attack)
+            if (Opponent != null && currentState == State.Attack)
             {
                 StartCoroutine(Opponent.TakeHit(attackType, MyWeapon.stats[attackType]));
                 yield return new WaitForSeconds(1f);

@@ -16,6 +16,15 @@ public class RobotManagerScr : MonoBehaviour {
 	void Update () {
 		
 	}
+	public void TurnLeft()
+	{
+		GetComponent<Animator>().CrossFade("TurnLeft",0.1f);
+	}
+
+	public void TurnRight()
+	{
+		GetComponent<Animator>().CrossFade("TurnRight",0.1f);
+	}
 
 	public void StartFight()
 	{
